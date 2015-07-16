@@ -1,0 +1,136 @@
+<!doctype html>
+<html lang="en" ng-app="nameModule">
+<head>
+    <meta charset="utf-8">
+    <title>DemoWebsite</title>
+
+    <link href="bower_components/semantic-ui/dist/semantic.min.css" rel="stylesheet" type="text/css"/>
+
+</head>
+<body>
+
+<div class="container">
+
+
+    <!-- Register Controller-->
+    <h1>Register Now</h1>
+    <div class="ui form segment" ng-controller="RegisterController">
+        <!--<div class="ui error message"></div>-->
+        <div class="ui inverted dimmer" ng-class="{true: 'active', false: 'disabled'}[loading]">
+            <div class="ui text loader">Registering you now :)</div>
+        </div>
+
+        <div class="two fields">
+            <div class="field">
+                <label for="GivenName">Given Name</label>
+                <div class="ui icon input">
+
+                    <input id="GivenName" placeholder="Given Name" type="text" ng-model="user.givenname">
+                    <i class="asterisk red icon"></i>
+                </div>
+            </div>
+
+            <div class="field">
+                <label for="Surname">Surname</label>
+                <div class="ui icon input">
+                    <input id="Surname" placeholder="Surname" type="text" ng-model="user.surname">
+                    <i class="asterisk red icon"></i>
+                </div>
+            </div>
+        </div>
+
+        <div class="field">
+            <label for="Email">Email</label>
+            <div class="ui icon input">
+                <input id="emailAddress" placeholder="Email" type="text" ng-model="user.email">
+                <i class="asterisk red icon"></i>
+            </div>
+        </div>
+
+        <div class="field">
+            <label for="Username">Username</label>
+            <div class="ui icon input">
+                <input id="Username" placeholder="Username" type="text" ng-model="user.username">
+                <i class="asterisk red icon"></i>
+            </div>
+        </div>
+
+        <div class="field">
+            <label for="Password">Password</label>
+            <div class="ui icon input">
+                <input id="Pass" type="password" ng-model="user.password">
+                <i class="asterisk red icon"></i>
+            </div>
+
+        <div class="field">
+            <label for="PasswordConfirm">Password Confirm</label>
+            <div class="ui icon input">
+                <input id="PasswordConfirm" type="password" ng-model="user.passwordConfirm">
+                <i class="asterisk red icon"></i>
+            </div>
+        </div>
+
+        <button class="ui blue button" ng-click="register()">Submit</button>
+
+        </div>
+        </div>
+
+
+    <!-- Login Controller -->
+    <h1>Login</h1>
+    <div class="ui form segment" ng-controller="LoginController">
+
+            <div class="two fields">
+                <div class="field">
+
+                    <div class="ui inverted dimmer" ng-class="{true: 'active', false: 'disabled'}[loading]">
+                        <div class="ui text loader">Logging in now :)</div>
+                    </div>
+
+
+                    <label for="Email">Email Address</label>
+                    <div class="ui icon input">
+                        <input id="Email" placeholder="Enter Email Address" type="text" ng-model="userLogin.email">
+                    </div>
+                </div>
+
+                <div class="field">
+                    <label for="Surname">Password</label>
+                    <div class="ui icon input">
+                        <input id="Password" placeholder="Enter Password" type="text" ng-model="userLogin.password">
+                    </div>
+                </div>
+            </div>
+
+            <!--<a href="view2/index.html">-->
+                <button class="ui blue button" ng-click="login()">Login</button>
+            <!--</a>-->
+
+
+
+        </div>
+
+
+
+
+</div>
+
+
+
+<!-- Javascript Files -->
+<script src="bower_components/jquery/dist/jquery.min.js"></script>
+<script src="bower_components/semantic-ui/dist/semantic.min.js"></script>
+<script src="bower_components/angular/angular.min.js"></script>
+
+<!--Firebase -->
+<script src="https://cdn.firebase.com/js/client/2.1.2/firebase.js"></script>
+<!--Angular Fire-->
+<script src="https://cdn.firebase.com/libs/angularfire/0.9.2/angularfire.min.js"></script>
+
+<!-- My Other Javascript Files -->
+<script src="form.js"></script>
+<script src="controller.js"></script>
+
+
+</body>
+</html>
