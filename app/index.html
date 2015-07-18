@@ -42,7 +42,7 @@ User time interval<input ng-model="userTimeInterval" type="number">
                         <form id="timeIntervalForm">
                             <h3>Set Time Interval of Timer</h3>
                             Min: <input type="number" ng-model="userTimeInterval.min" min="0" max="60">  Sec: <input type="number" ng-model="userTimeInterval.sec" max="60" min="0">
-                            <button class="btn btn-primary" ng-click="edittime=false; selectTimeInterval()" ng-hide="edittime=false">Select this time</button>
+                            <button class="btn btn-primary" ng-click="edittime=false; selectTimeInterval(); timeLeft();" ng-hide="edittime=false">Select this time</button>
                         </form>
 
                     </div>
@@ -52,8 +52,8 @@ User time interval<input ng-model="userTimeInterval" type="number">
                     </div>
 
                 </div>
-                <div class="main">
-                    <img src="img/profilepic.jpg" class="img-responsive img-circle personpic">
+                <div class="main text-center">
+                    <!--<img src="img/profilepic.jpg" class="img-responsive img-circle personpic">-->
                     <p></p>
                     <h1 class="text-center">Go TEAM THOR</h1>
                     <h2 class="text-center">On the clock!</h2>
@@ -104,6 +104,22 @@ User time interval<input ng-model="userTimeInterval" type="number">
     </div>
 
 </div><!--ends container-fluid-->
+
+<div ng-controller="timertestCtrl">
+
+    <form id="timeIntervalForm2">
+        <h3>Set Time Interval of Timer</h3>
+        Min: <input type="number" ng-model="userTimeInterval2.min" min="0" max="60">  Sec: <input type="number" ng-model="userTimeInterval2.sec" max="60" min="0">
+        <button class="btn btn-primary" ng-click="submit(); edittime=false;" ng-hide="edittime=false">Select this time</button>
+    </form>
+
+
+    <div id="countdown"></div>
+    Days <span id="countdownDays"></span>
+    Hrs <span id="countdownHr"></span>
+    M <span id="countdownMin"></span>
+    S<span id="countdownSec"></span>
+</div>
 
 <script src="app.js"></script>
 </body>
