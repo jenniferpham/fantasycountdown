@@ -18,16 +18,23 @@
 
                 <div class="row header">
                     <div class="col-xs-4">
-                        <button class="btn btn-danger" ng-click="started=true">Start Time</button>
-                        <button class="btn btn-danger" ng-click="pause=true" ng-show="started">Pause Timer</button>
-                        <button class="btn btn-danger" ng-click="started=true" ng-show="pause">Resume Timer</button>
+                        <button class="btn btn-danger" ng-click="started=true; startTime()"><i class="glyphicon glyphicon-play"></i> Start Time</button>
+                        <button class="btn btn-danger" ng-click="pause=true" ng-show="started"><i class="glyphicon glyphicon-pause"></i> Pause Timer</button>
+                        <button class="btn btn-danger" ng-click="started=true" ng-show="pause"><i class="glyphicon glyphicon-play"></i> Resume Timer</button>
                     </div>
                     <div class="col-xs-4 text-center">
-                        <h2>2:00</h2>
+                        <h2>{{userTimeInterval.min}}:{{userTimeInterval.sec}}</h2>
+                        <br> time left: {{countdownMin}}:{{countdownSec}}
+                        <form id="timeIntervalForm">
+                            <h3>Set Time Interval of Timer</h3>
+                            Min: <input type="number" ng-model="userTimeInterval.min" min="0" max="60">  Sec: <input type="number" ng-model="userTimeInterval.sec" max="60" min="0">
+                            <button class="btn btn-primary" ng-click="edittime=false" ng-hide="edittime=false">Select this time</button>
+                        </form>
+
                     </div>
                     <div class="col-xs-4">
-                        <button class="btn btn-warning">Change Time</button>
-                        <button class="btn btn-primary">Restart Time</button>
+                        <button class="btn btn-warning" ng-click="edittime=true"><i class="glyphicon glyphicon-time"></i> Change Time</button>
+                        <button class="btn btn-primary" ng-click="started=true; startTime()"><i class="glyphicon glyphicon-refresh"></i> Restart Time</button>
                     </div>
 
                 </div>
@@ -38,7 +45,7 @@
                     <h2 class="text-center">On the clock!</h2>
                 </div>
                 <div class="footer">
-                    NEXT PERSON ON DECK
+                    NEXT PERSON ON DECK {{nextperson}}
                 </div>
         </div>
         <div class="col-sm-4 col-xs-6 namebox" ng-controller="nameCtrl">
@@ -50,6 +57,37 @@
                 <li ng-repeat="onename in randomNames">{{onename}}</li>
             </ol>
             {{randomNames}}
+            <br>
+
+            <div ng-repeat="onename in randomNames" class="row list-group-item">
+                <!--ng model can be anything that takes an input like radio, textbox, etc.-->
+                <div class="col-sm-6">
+                    <input type="checkbox" ng-model="todo.completed">
+                    <span ng-hide="edit">{{$index + 1}}. {{nameArray.name}}</span>
+                    <input type="text" ng-model="todo.title" ng-show="edit" size="40">
+                </div>
+                <div class="col-sm-4">
+                    <button ng-show="edit" ng-click="edit=false" class="btn btn-warning btn-sm"><span class="glyphicon glyphicon-remove"></span> Done with my edits</button>
+                    <button class="btn-sm btn-warning" ng-click="edit=true" ng-hide="edit"><span class="glyphicon glyphicon-pencil"></span> Edit</button>
+                    <!--$index is special angular value and chooses index of array-->
+                    <button class="btn-sm btn-danger" ng-click="delete(todo)"><span class="glyphicon glyphicon-remove"></span> Delete</button>
+                </div>
+            </div>
+
+            <button value="restart">Delete All Names</button>
+
+            <label for="newteam">New Team</label>
+            <form name="form" class="row" ng-submit="add()" >
+                <div class="col-sm-6">
+
+                    <input type="text" class="form-control" id="newTeam" ng-model="newName" placeholder="What's your awesome team name?" required />
+                </div>
+                <div class="col-sm-4">
+                    <button type="submit" class="btn btn-primary" ng-disabled="form.$invalid || newTeam.length < 5"><span class="glyphicon glyphicon-plus"></span> Add</button>
+                </div>
+            </form>
+
+
         </div>
     </div>
 </div>

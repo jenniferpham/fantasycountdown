@@ -38,6 +38,17 @@
             //    randomize names
             //function randomizer() {
                 var nameArray = ['John', 'Jack', 'Jill', 'Leo', 'Teri', 'Ty', 'Allison'];
+            $scope.delete = function(item){
+                $scope.nameArray.splice($scope.nameArray.indexOf(item),1);
+
+            };
+
+            $scope.add = function(){
+                //GET A NUMBER: get tag of input name and then substring to just get the number, then parseInt the number
+
+                $scope.namesArray.push({name: $scope.newName, orderEntered: false});
+                $scope.newName = "";
+            };
                 var tempArr = [];
                 for (var i = 0; i < nameArray.length - 1; i++) {
                     //// The following line removes one random element from arr and pushes it onto tempArr (.splice(1st # is index # being removed, 2nd # is how many)
@@ -55,7 +66,7 @@
         })
 
         .controller("timerCtrl", function($scope){
-            var timeInterval = $scope.timeInterval;
+           /* var timeInterval = $scope.timeInterval;
             function countdownTiming(){
                 // set the date we're counting down to
                 var target_date = new Date("July 15, 2015").getTime();
@@ -89,27 +100,32 @@
 
                 }, 1000);
             }
-
+*/
             //------------my code
+            //user submits time interval they want in minutes and seconds
+            var userTimeInterval = $scope.userTimeInterval;  //object with min and sec property
+            var userMin = parseInt(userTimeInterval.min);
+            var userSec = parseInt(userTimeInterval.sec);
+            var userTimeIntervalMS = ((userMin * 60) + userSec) * 1000; //must set ng-model and change to milliseconds
             setInterval(function () {
 
                 // set the date you are counting down to
                 var timeNow = new Date().getTime();
                 //***!!!!GET DATE NOW()
 
-                var userTimeInterval = $scope.userTimeInterval; //must set ng-model
-                var targetTime = timeNow + userTimeInterval;
+
+                var targetTime = timeNow + userTimeIntervalMS;
 
                 var secondsDifference = (targetTime - timeNow) / 1000;  //divide by 1000 because the difference is in milliseconds and we want seconds
 
                 var minutesLeft = parseInt((secondsDifference / 60), 10);
                 var secondsLeft = parseInt((secondsDifference % 60), 10);  //get remainder of seconds that don't evenly fit into minutes or 69 sec
 
-                //use these variables to display
+                //use these variables to display on client side
                 $scope.countdownMin = minutesLeft;
                 $scope.countdownSec = secondsLeft;
 
-            });
+            }, userTimeIntervalMS);
 /*
                 //dont let them go over 60 min
                 //most likely wont use but just in case
