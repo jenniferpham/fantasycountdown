@@ -2,8 +2,8 @@
     'use strict';
 
     //must match ng-app on html side
-    angular.module("ffcountdown", [])
-        .controller("ToDoController", function($scope){
+    angular.module("ffcountdownApp", [])
+     /*   .controller("ToDoController", function($scope){
 
             $scope.todos = [
                 //official json specification is double-quotes
@@ -33,8 +33,9 @@
 
 
         }) //closes angular controller
-
+*/
         .controller("nameCtrl", function($scope) {
+            $scope.hello="hello";
             //    randomize names
             //function randomizer() {
                 var nameArray = ['John', 'Jack', 'Jill', 'Leo', 'Teri', 'Ty', 'Allison'];
@@ -65,42 +66,43 @@
             //}
         })
 
-        .controller("timerCtrl", function($scope){
-           /* var timeInterval = $scope.timeInterval;
-            function countdownTiming(){
-                // set the date we're counting down to
-                var target_date = new Date("July 15, 2015").getTime();
+        .controller("timerCtrl", function($scope) {
+            $scope.hello="hello";
+            /* var timeInterval = $scope.timeInterval;
+             function countdownTiming(){
+             // set the date we're counting down to
+             var target_date = new Date("July 15, 2015").getTime();
 
-// variables for time units
-                var days, hours, minutes, seconds;
+             // variables for time units
+             var days, hours, minutes, seconds;
 
-// get tag element
-                var countdown = document.getElementById("countdown");
+             // get tag element
+             var countdown = document.getElementById("countdown");
 
-// update the tag with id "countdown" every 1 second
-                setInterval(function () {
+             // update the tag with id "countdown" every 1 second
+             setInterval(function () {
 
-                    // find the amount of "seconds" between now and target
-                    var current_date = new Date().getTime();
-                    var seconds_left = (target_date - current_date) / 1000;
+             // find the amount of "seconds" between now and target
+             var current_date = new Date().getTime();
+             var seconds_left = (target_date - current_date) / 1000;
 
-                    // do some time calculations
-                    days = parseInt(seconds_left / 86400);
-                    seconds_left = seconds_left % 86400;
+             // do some time calculations
+             days = parseInt(seconds_left / 86400);
+             seconds_left = seconds_left % 86400;
 
-                    hours = parseInt(seconds_left / 3600);
-                    seconds_left = seconds_left % 3600;
+             hours = parseInt(seconds_left / 3600);
+             seconds_left = seconds_left % 3600;
 
-                    minutes = parseInt(seconds_left / 60);
-                    seconds = parseInt(seconds_left % 60);
+             minutes = parseInt(seconds_left / 60);
+             seconds = parseInt(seconds_left % 60);
 
-                    // format countdown string + set tag value
-                    countdown.innerHTML = days + "d, " + hours + "h, "
-                        + minutes + "m, " + seconds + "s";
+             // format countdown string + set tag value
+             countdown.innerHTML = days + "d, " + hours + "h, "
+             + minutes + "m, " + seconds + "s";
 
-                }, 1000);
-            }
-*/
+             }, 1000);
+             }
+             */
             //------------my code
             //user submits time interval they want in minutes and seconds
             var userTimeInterval = $scope.userTimeInterval;  //object with min and sec property
@@ -126,6 +128,7 @@
                 $scope.countdownSec = secondsLeft;
 
             }, userTimeIntervalMS);
+        })
 /*
                 //dont let them go over 60 min
                 //most likely wont use but just in case
@@ -137,6 +140,7 @@
 */
 
 
+/*
 
                 //-----------Maui code
 
@@ -172,6 +176,7 @@
                 }, 1000);
 
             }
+*/
 
 
 //Just add this HTML into your page
@@ -179,13 +184,13 @@
 // <span id="countdownHr"></span>
 // <span id="countdownMin"></span>
 // <span id="countdownSec"></span>
-        })
+
 
         .filter('reverse', function() {
             return function(items) {
                 return items.slice().reverse();
             };
-        })
+        });
 
 
- }());
+}());

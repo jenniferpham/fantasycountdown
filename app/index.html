@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html ng-app="ffcountdown">
+<html ng-app="ffcountdownApp">
 <head lang="en">
     <meta charset="UTF-8">
     <title>ToDo</title>
@@ -9,13 +9,15 @@
     <script src="./bower_components/angular/angular.js"></script>
 </head>
 <body>
+<div ng-controller="testCtrl">
+
+</div>
 
 
 <div class="container-fluid">
     <div class="row">
         <div class="col-md-8 col-xs-6 timerbox" ng-controller="timerCtrl">
-            <br><input type="number" ng-model="timeInterval" value="1" placeholder="1">
-
+<h1>{{hello}}</h1>
                 <div class="row header">
                     <div class="col-xs-4">
                         <button class="btn btn-danger" ng-click="started=true; startTime()"><i class="glyphicon glyphicon-play"></i> Start Time</button>
@@ -54,16 +56,17 @@
             <br>
             <h3>LIST OF NAMES from array</h3>
             <ol>
-                <li ng-repeat="onename in randomNames">{{onename}}</li>
+                <li ng-repeat="onename in nameArray">{{onename}}</li>
             </ol>
-            {{randomNames}}
+
+            {{nameArray}}
             <br>
 
-            <div ng-repeat="onename in randomNames" class="row list-group-item">
+            <div ng-repeat="onename in nameArrays" class="row list-group-item">
                 <!--ng model can be anything that takes an input like radio, textbox, etc.-->
                 <div class="col-sm-6">
                     <input type="checkbox" ng-model="todo.completed">
-                    <span ng-hide="edit">{{$index + 1}}. {{nameArray.name}}</span>
+                    <span ng-hide="edit">{{$index + 1}}. {{onename.name}}</span>
                     <input type="text" ng-model="todo.title" ng-show="edit" size="40">
                 </div>
                 <div class="col-sm-4">
