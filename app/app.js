@@ -89,6 +89,48 @@
 
                 }, 1000);
             }
+
+            //------------from Maui code
+            // set the date you are counting down to
+            var target_date = new Date("Dec 14, 2014").getTime();
+
+// variables for time units
+            var days, hours, minutes, seconds;
+
+// get tag element
+            var countdown = document.getElementById("countdown");
+
+// update the tag with id "countdown" every 1 second
+            setInterval(function () {
+
+                // find the amount of "seconds" between now and target
+                var current_date = new Date().getTime();
+                var seconds_left = (target_date - current_date) / 1000;
+
+                // do some time calculations
+                days = parseInt(seconds_left / 86400);
+                seconds_left = seconds_left % 86400;
+
+                hours = parseInt(seconds_left / 3600);
+                seconds_left = seconds_left % 3600;
+
+                minutes = parseInt(seconds_left / 60);
+                seconds = parseInt(seconds_left % 60);
+
+                // format countdown string + set tag value
+                countdownDays.innerHTML = days;
+                countdownHr.innerHTML = hours;
+                countdownMin.innerHTML = minutes;
+                countdownSec.innerHTML = seconds;
+
+            }, 1000);
+
+
+//Just add this HTML into your page
+// <span id="countdownDays"></span>
+// <span id="countdownHr"></span>
+// <span id="countdownMin"></span>
+// <span id="countdownSec"></span>
         })
 
         .filter('reverse', function() {
