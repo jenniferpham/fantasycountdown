@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html ng-app="ffcountdownApp">
+<html ng-app="todo">
 <head lang="en">
     <meta charset="UTF-8">
     <title>ToDo</title>
@@ -9,20 +9,32 @@
     <script src="./bower_components/angular/angular.js"></script>
 </head>
 <body>
-<div ng-controller="testCtrl">
-
-</div>
 
 
-<div class="container-fluid">
+<!--<div class="container-fluid">
     <div class="row">
         <div class="col-md-8 col-xs-6 timerbox" ng-controller="timerCtrl">
-<h1>{{hello}}</h1>
+            {{hello}}
+        </div>
+    </div>
+</div>-->
+<!--
+<div ng-controller="timerCtrl">
+User time interval<input ng-model="userTimeInterval" type="number">
+</div>
+
+-->
+<h1>Fantasy Football Draft Countdown Timer</h1>
+    <div class="container-fluid" ng-controller="timeCtrl">
+        <div class="row">
+
+<!--TIMER            -->
+            <div class="col-md-8 col-xs-6 timerbox">
                 <div class="row header">
                     <div class="col-xs-4">
-                        <button class="btn btn-danger" ng-click="started=true; startTime()"><i class="glyphicon glyphicon-play"></i> Start Time</button>
-                        <button class="btn btn-danger" ng-click="pause=true" ng-show="started"><i class="glyphicon glyphicon-pause"></i> Pause Timer</button>
-                        <button class="btn btn-danger" ng-click="started=true" ng-show="pause"><i class="glyphicon glyphicon-play"></i> Resume Timer</button>
+                        <button class="btn btn-danger" ng-click="started=true; startTime(); timeLeft();"><i class="glyphicon glyphicon-play"></i> Start Time</button>
+                        <button class="btn btn-danger" ng-click="pause=true" ng-show="started" ng-hide="pause"><i class="glyphicon glyphicon-pause"></i> Pause Timer</button>
+                        <button class="btn btn-danger" ng-click="started=true" ng-hide="started" ng-show="pause"><i class="glyphicon glyphicon-play"></i> Resume Timer</button>
                     </div>
                     <div class="col-xs-4 text-center">
                         <h2>{{userTimeInterval.min}}:{{userTimeInterval.sec}}</h2>
@@ -30,7 +42,7 @@
                         <form id="timeIntervalForm">
                             <h3>Set Time Interval of Timer</h3>
                             Min: <input type="number" ng-model="userTimeInterval.min" min="0" max="60">  Sec: <input type="number" ng-model="userTimeInterval.sec" max="60" min="0">
-                            <button class="btn btn-primary" ng-click="edittime=false" ng-hide="edittime=false">Select this time</button>
+                            <button class="btn btn-primary" ng-click="edittime=false; selectTimeInterval()" ng-hide="edittime=false">Select this time</button>
                         </form>
 
                     </div>
@@ -49,105 +61,50 @@
                 <div class="footer">
                     NEXT PERSON ON DECK {{nextperson}}
                 </div>
-        </div>
-        <div class="col-sm-4 col-xs-6 namebox" ng-controller="nameCtrl">
-            <br>
-            <button class="btn btn-danger" ng-click="randomizer()">Randomize Names</button>
-            <br>
-            <h3>LIST OF NAMES from array</h3>
-            <ol>
-                <li ng-repeat="onename in nameArray">{{onename}}</li>
-            </ol>
+            </div>            <!-- closes column .timerbox-->
 
-            {{nameArray}}
-            <br>
+<!-- NAMES-->
+            <div class="col-sm-4 col-xs-6 namebox">
+                <button class="btn btn-danger" ng-click="randomizer()">Randomize Names</button>
+                <br>
+                NUMBER OF TEAMS<br>
+                NUMBER OF ROUNDS<br>
+                <h3>Add New Name</h3>
+                <form id="addName"ng-submit="addName()" >
+                    <input type="text" class="form-control" id="newName" ng-model="newName" placeholder="What's your awesome team name?" />
+                    <button type="submit" class="btn btn-primary" ng-disabled="form.$invalid || newName.length < 1"><span class="glyphicon glyphicon-plus"></span> Add</button>
 
-            <div ng-repeat="onename in nameArrays" class="row list-group-item">
-                <!--ng model can be anything that takes an input like radio, textbox, etc.-->
-                <div class="col-sm-6">
-                    <input type="checkbox" ng-model="todo.completed">
-                    <span ng-hide="edit">{{$index + 1}}. {{onename.name}}</span>
-                    <input type="text" ng-model="todo.title" ng-show="edit" size="40">
-                </div>
-                <div class="col-sm-4">
-                    <button ng-show="edit" ng-click="edit=false" class="btn btn-warning btn-sm"><span class="glyphicon glyphicon-remove"></span> Done with my edits</button>
-                    <button class="btn-sm btn-warning" ng-click="edit=true" ng-hide="edit"><span class="glyphicon glyphicon-pencil"></span> Edit</button>
-                    <!--$index is special angular value and chooses index of array-->
-                    <button class="btn-sm btn-danger" ng-click="delete(todo)"><span class="glyphicon glyphicon-remove"></span> Delete</button>
-                </div>
-            </div>
+                </form>
+                <!--<input type="text" ng-model="newName"><button class="btn btn-primary" ng-click="addName()">Add Name</button>-->
+                <br>
+                <h3>Team Names</h3>
+                highlightedList = {{highlightedList}}<br>
+                <ol id="namelist">
+                    <li ng-repeat="onename in nameArray" id="{{onename.name}}" class="row onename-section">
 
-            <button value="restart">Delete All Names</button>
+                            <div class="col-xs-8">
+                                <span ng-hide="edit">
+                                  {{onename.name}}
+                                 </span>
+                                <input type="text" ng-model="onename.name" ng-show="edit" size="40">
+                            </div>
+                            <div class="col-xs-4">
+                                <button class="btn-sm btn-warning" ng-click="edit=true" ng-hide="edit" data-toggle="tooltip" data-placement="top" title="Edit Team Name"><i class="glyphicon glyphicon-pencil"></i></button>
+                                <button ng-show="edit" data-toggle="tooltip" data-placement="top" title="Save Changes" ng-click="edit=false" class="btn btn-warning btn-sm"><i class="glyphicon glyphicon-saved"></i></button>
+                                <button class="btn-sm btn-danger" ng-click="delete(onename)" data-toggle="tooltip" data-placement="top" title="Delete team name"><i class="glyphicon glyphicon-remove"></i></button>
 
-            <label for="newteam">New Team</label>
-            <form name="form" class="row" ng-submit="add()" >
-                <div class="col-sm-6">
+                            </div>
 
-                    <input type="text" class="form-control" id="newTeam" ng-model="newName" placeholder="What's your awesome team name?" required />
-                </div>
-                <div class="col-sm-4">
-                    <button type="submit" class="btn btn-primary" ng-disabled="form.$invalid || newTeam.length < 5"><span class="glyphicon glyphicon-plus"></span> Add</button>
-                </div>
-            </form>
-
-
+                    </li>
+                </ol>
+                <button class="btn btn-success" ng-click="deleteAll()">Delete All Names</button>
+<br><br>
+                <br></div><!-- closes column .namebox-->
         </div>
     </div>
-</div>
 
+</div><!--ends container-fluid-->
 
-<!--must match (case-sensitive) name of controller on todo-master.js-->
-<div class="col-md-12" ng-controller="ToDoController" class="container">
-    <h1>What do I need to do today?</h1>
-
-    <label for="searchbox">Search:</label>
-    <input type="text" ng-model="search" id="searchbox"/>
-    <label for="orderb">Order By: </label> <select id="orderb" ng-model="orderProp">
-    <option value="">Oldest to Newest</option>
-    <option value="title">Task Name</option>
-</select>
-    <p></p>
-    <br>
-
-    <div class="list-group"><h4>Items I Need To Do</h4>
-        <p></p>
-        Check off items once you have completed them
-        <div ng-repeat="todo in todos | filter: search | orderBy: orderProp" class="row list-group-item">
-            <!--ng model can be anything that takes an input like radio, textbox, etc.-->
-            <div class="col-sm-6">
-                <input type="checkbox" ng-model="todo.completed">
-                <span ng-hide="edit">{{$index + 1}}. {{todo.title}}</span>
-                <input type="text" ng-model="todo.title" ng-show="edit" size="40">
-            </div>
-            <div class="col-sm-4">
-                <button ng-show="edit" ng-click="edit=false" class="btn btn-warning btn-sm"><span class="glyphicon glyphicon-remove"></span> Done with my edits</button>
-                <button class="btn-sm btn-warning" ng-click="edit=true" ng-hide="edit"><span class="glyphicon glyphicon-pencil"></span> Edit</button>
-                <!--$index is special angular value and chooses index of array-->
-                <button class="btn-sm btn-danger" ng-click="delete(todo)"><span class="glyphicon glyphicon-remove"></span> Delete</button>
-            </div>
-        </div>
-
-        <br>
-        <!--button will delete items for all items that are checked true-->
-        <button type="button" class="btn btn-success" ng-click="clearFinished()"><span class="glyphicon glyphicon-ok"></span> Clear Checked Items</button>
-        <p></p>
-
-        <!--Form to add new Task-->
-        <label for="newtask">New Task</label>
-        <form name="form" class="row" ng-submit="add()" >
-            <div class="col-sm-6">
-
-                <input type="text" class="form-control" id="newtask" ng-model="newTodo" placeholder="What do you need to do next? (at least 5 characters)" required />
-            </div>
-            <div class="col-sm-4">
-                <button type="submit" class="btn btn-primary" ng-disabled="form.$invalid || newTodo.length < 5"><span class="glyphicon glyphicon-plus"></span> Add</button>
-            </div>
-        </form>
-    </div>
-
-</div>
-
-</div>
 <script src="app.js"></script>
 </body>
 </html>

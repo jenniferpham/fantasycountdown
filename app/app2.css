@@ -34,7 +34,7 @@
   min-height: 60px;
 }
 .main{
-  background-image: url('img/Football.jpg');
+  background-image: url('img/football.jpg');
   background-repeat: no-repeat;
   background-size: cover;
   width: 100%;
@@ -46,14 +46,10 @@
   margin: 0 auto;
 }
 h1{
-  color: #912d2b;
-}
-.timerbox h1{
   font-weight: 800;
   font-size: 50px;
   color: yellow;
 }
-
 .footer{
   background-color: #912d2b;
   width: 100%;
@@ -64,8 +60,4 @@ h1{
 }
 input{
   color: black;
-}
-ol#namelist li.highlight{
-  color: red;
-  background-color: yellow;
 }
