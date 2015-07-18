@@ -90,40 +90,72 @@
                 }, 1000);
             }
 
-            //------------from Maui code
-            // set the date you are counting down to
-            var target_date = new Date("Dec 14, 2014").getTime();
-
-// variables for time units
-            var days, hours, minutes, seconds;
-
-// get tag element
-            var countdown = document.getElementById("countdown");
-
-// update the tag with id "countdown" every 1 second
+            //------------my code
             setInterval(function () {
 
-                // find the amount of "seconds" between now and target
-                var current_date = new Date().getTime();
-                var seconds_left = (target_date - current_date) / 1000;
+                // set the date you are counting down to
+                var timeNow = new Date().getTime();
+                //***!!!!GET DATE NOW()
 
-                // do some time calculations
-                days = parseInt(seconds_left / 86400);
-                seconds_left = seconds_left % 86400;
+                var userTimeInterval = $scope.userTimeInterval; //must set ng-model
+                var targetTime = timeNow + userTimeInterval;
 
-                hours = parseInt(seconds_left / 3600);
-                seconds_left = seconds_left % 3600;
+                var secondsDifference = (targetTime - timeNow) / 1000;  //divide by 1000 because the difference is in milliseconds and we want seconds
 
-                minutes = parseInt(seconds_left / 60);
-                seconds = parseInt(seconds_left % 60);
+                var minutesLeft = parseInt((secondsDifference / 60), 10);
+                var secondsLeft = parseInt((secondsDifference % 60), 10);  //get remainder of seconds that don't evenly fit into minutes or 69 sec
 
-                // format countdown string + set tag value
-                countdownDays.innerHTML = days;
-                countdownHr.innerHTML = hours;
-                countdownMin.innerHTML = minutes;
-                countdownSec.innerHTML = seconds;
+                //use these variables to display
+                $scope.countdownMin = minutesLeft;
+                $scope.countdownSec = secondsLeft;
 
-            }, 1000);
+            });
+/*
+                //dont let them go over 60 min
+                //most likely wont use but just in case
+                $scope.countdownHrs = "";
+                //if hours exist, then change $scope.countdownHours to a number. Otherwise it's blank.
+                if (minutesLeft >= 60){
+
+                }
+*/
+
+
+
+                //-----------Maui code
+
+// variables for time units
+                var days, hours, minutes, seconds;
+
+// get tag element
+                var countdown = document.getElementById("countdown");
+
+// update the tag with id "countdown" every 1 second
+                setInterval(function () {
+
+                    // find the amount of "seconds" between now and target
+                    var current_date = new Date().getTime();
+                    var seconds_left = (target_date - current_date) / 1000;
+
+                    // do some time calculations
+                    days = parseInt(seconds_left / 86400);
+                    seconds_left = seconds_left % 86400;
+
+                    hours = parseInt(seconds_left / 3600); //3600 sec in 1 hr
+                    seconds_left = seconds_left % 3600;
+
+                    minutes = parseInt(seconds_left / 60);
+                    seconds = parseInt(seconds_left % 60);
+
+                    // format countdown string + set tag value
+                    countdownDays.innerHTML = days;
+                    countdownHr.innerHTML = hours;
+                    countdownMin.innerHTML = minutes;
+                    countdownSec.innerHTML = seconds;
+
+                }, 1000);
+
+            }
 
 
 //Just add this HTML into your page
