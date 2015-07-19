@@ -30,33 +30,25 @@ User time interval<input ng-model="userTimeInterval" type="number">
 
 <!--TIMER            -->
             <div class="col-md-8 col-xs-6 timerbox">
-                <div class="row header">
-                    <div class="col-xs-4">
+                <div class="header">
                         <button class="btn btn-danger" ng-click="started=true; startTime(); timeLeft();"><i class="glyphicon glyphicon-play"></i> Start Time</button>
-                        <button class="btn btn-danger" ng-click="pause=true" ng-show="started" ng-hide="pause"><i class="glyphicon glyphicon-pause"></i> Pause Timer</button>
+                        <button class="btn btn-danger" ng-click="pause=true; pauseTimer()" ng-show="started" ng-hide="pause"><i class="glyphicon glyphicon-pause"></i> Pause Timer</button>
                         <button class="btn btn-danger" ng-click="started=true" ng-hide="started" ng-show="pause"><i class="glyphicon glyphicon-play"></i> Resume Timer</button>
-                    </div>
-                    <div class="col-xs-4 text-center">
-                        <h2>{{userTimeInterval.min}}:{{userTimeInterval.sec}}</h2>
-                        <br> time left: {{countdownMin}}:{{countdownSec}}
-                        <form id="timeIntervalForm">
-                            <h3>Set Time Interval of Timer</h3>
-                            Min: <input type="number" ng-model="userTimeInterval.min" min="0" max="60">  Sec: <input type="number" ng-model="userTimeInterval.sec" max="60" min="0">
-                            <button class="btn btn-primary" ng-click="edittime=false; selectTimeInterval(); timeLeft();" ng-hide="edittime=false">Select this time</button>
-                        </form>
-
-                    </div>
-                    <div class="col-xs-4">
-                        <button class="btn btn-warning" ng-click="edittime=true"><i class="glyphicon glyphicon-time"></i> Change Time</button>
+                        <button class="btn btn-warning" ng-click="setTime(); edittime=true"><i class="glyphicon glyphicon-time"></i> Change Time</button>
                         <button class="btn btn-primary" ng-click="started=true; startTime()"><i class="glyphicon glyphicon-refresh"></i> Restart Time</button>
-                    </div>
 
                 </div>
                 <div class="main text-center">
                     <!--<img src="img/profilepic.jpg" class="img-responsive img-circle personpic">-->
                     <p></p>
-                    <h1 class="text-center">Go TEAM THOR</h1>
+                    <h1 class="text-center">Go {{activeTeam}}<span class="activeTeam"></span></span></h1>
                     <h2 class="text-center">On the clock!</h2>
+                    Round {{numberRound}} of {{totalRounds}}<br>
+                    Pick {{numberPick}} of {{totalPicks}}<br>
+
+<h1 class="timerdisplay">
+    <span id="countdownMin"></span>:<span id="countdownSec"></span><br>
+</h1>
                 </div>
                 <div class="footer">
                     NEXT PERSON ON DECK {{nextperson}}
@@ -65,10 +57,20 @@ User time interval<input ng-model="userTimeInterval" type="number">
 
 <!-- NAMES-->
             <div class="col-sm-4 col-xs-6 namebox">
-                <button class="btn btn-danger" ng-click="randomizer()">Randomize Names</button>
+                <h3>Set the Fantasy Draft Timer</h3>
                 <br>
-                NUMBER OF TEAMS<br>
-                NUMBER OF ROUNDS<br>
+                Number of Teams: <input type="number" ng-model="totalPicks" min="1"><br>
+                Number of Rounds: <input type="number" ng-model="totalRounds" min="1"><br>
+
+                <form id="timeIntervalForm">
+
+                    Min: <input type="number" ng-model="userTimeInterval.min" min="0" max="60">  Sec: <input type="number" ng-model="userTimeInterval.sec" max="60" min="0">
+                    <button class="btn btn-primary" ng-click="setTime(); startTimer(); goThroughNames(); edittime=false;" ng-hide="edittime=false">Start time</button>
+                </form>
+                <br>
+                <p ng-show="edittime=false">The timer will go every {{userMin}} minutes and {{userSec}} seconds. </p>
+                <br>
+
                 <h3>Add New Name</h3>
                 <form id="addName"ng-submit="addName()" >
                     <input type="text" class="form-control" id="newName" ng-model="newName" placeholder="What's your awesome team name?" />
@@ -97,6 +99,8 @@ User time interval<input ng-model="userTimeInterval" type="number">
 
                     </li>
                 </ol>
+                <button class="btn btn-danger" ng-click="randomizer()">Randomize Names</button>
+
                 <button class="btn btn-success" ng-click="deleteAll()">Delete All Names</button>
 <br><br>
                 <br></div><!-- closes column .namebox-->
@@ -105,20 +109,9 @@ User time interval<input ng-model="userTimeInterval" type="number">
 
 </div><!--ends container-fluid-->
 
-<div ng-controller="timertestCtrl">
-
-    <form id="timeIntervalForm2">
-        <h3>Set Time Interval of Timer</h3>
-        Min: <input type="number" ng-model="userTimeInterval2.min" min="0" max="60">  Sec: <input type="number" ng-model="userTimeInterval2.sec" max="60" min="0">
-        <button class="btn btn-primary" ng-click="submit(); edittime=false;" ng-hide="edittime=false">Select this time</button>
-    </form>
+<div>
 
 
-    <div id="countdown"></div>
-    Days <span id="countdownDays"></span>
-    Hrs <span id="countdownHr"></span>
-    M <span id="countdownMin"></span>
-    S<span id="countdownSec"></span>
 </div>
 
 <script src="app.js"></script>

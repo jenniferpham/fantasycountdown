@@ -35,184 +35,129 @@
                     }
                 );
                 return nameArray;
-            }
+            };
 
             $scope.deleteAll = function(){
                 $scope.nameArray = [{name:"", orderNumber:0}];
 
-            }
-
-     //TIMER FUNCTIONS
-            var userTimeIntervalMS;
-            $scope.selectTimeInterval = function(){
-                var userTimeInterval = $scope.userTimeInterval;  //object with min and sec property
-                var userMin = parseInt($scope.userTimeInterval.min);
-                var userSec = parseInt($scope.userTimeInterval.sec);
+            };
+            $scope.numberRound = 0;
+            $scope.numberPick = 0;
+// SET TIMER
+            var userTimeIntervalMS, userMin, userSec, totalPicks, totalRounds;
+            $scope.setTime= function(){
+                var userTimeInterval = $scope.userTimeInterval; //object with min and sec property
+                userMin = parseInt($scope.userTimeInterval.min);
+                userSec = parseInt($scope.userTimeInterval.sec);
                 userTimeIntervalMS = ((userMin * 60) + userSec) * 1000; //must set ng-model and change to milliseconds
-               // $scope.userTimeInterval= "";
-                alert(userTimeInterval + " " + userTimeIntervalMS);
-            };
-
-            //$scope.startTime = function(){
-            //
-            //};
-
-     //function to get leftover time
-            $scope.timeLeft = function(){
-                // set the date you are counting down to
-                var timeNow = new Date("July 19, 2015").getTime();
-                var targetTime = timeNow + userTimeIntervalMS;
-                var secondsDifference = (targetTime - timeNow) / 1000;  //divide by 1000 because the difference is in milliseconds and we want seconds
-
-                var minutesLeft = parseInt((secondsDifference / 60), 10);
-                var secondsLeft = parseInt((secondsDifference % 60), 10);  //get remainder of seconds that don't evenly fit into minutes or 69 sec
-alert("timeNow " + timeNow + ". targetTime " + targetTime + ". secondsDifference " + secondsDifference + ". minLeft " + minutesLeft + ". secLeft "+secondsLeft)
-                //use these variables to display on client side
-                $scope.countdownMin = minutesLeft;
-                $scope.countdownSec = secondsLeft;
+               // alert("min " + userMin + "sec " + userSec + "userTimeIntervalMS " + userTimeIntervalMS)
+                $scope.userTimeIntervalMS = userTimeIntervalMS;
+                $scope.userMin = userMin;
+                $scope.userSec = userSec;
 
             };
+            var numberRound = $scope.numberRound;
+            var numberPick = $scope.numberPick;
+            var totalRounds = $scope.totalRounds;
+            var totalPicks = $scope.totalPicks;
+            var numberLoops = 0;
+            var maxLoops = totalPicks * totalRounds;
 
-            var numberLoop = 0;
-            $scope.startTime = function(){
+            //refresh timer
+            var startCountdown = function () {
+                // set the date we're counting down to
+                var target_date = new Date().getTime() + userTimeIntervalMS;
+
+                // variables for time units
+                var days, hours, minutes, seconds;
+
+                // update the tag with id "countdown" every 1 second
+
+                setInterval(function () {
+
+                    // find the amount of "seconds" between now and target
+                    var current_date = new Date().getTime();
+                    var seconds_left = (target_date - current_date) / 1000;
+
+                    // do some time calculations
+                    days = parseInt(seconds_left / 86400);
+                    seconds_left = seconds_left % 86400;
+
+                    hours = parseInt(seconds_left / 3600);
+                    seconds_left = seconds_left % 3600;
+
+                    minutes = parseInt(seconds_left / 60);
+                    seconds = parseInt(seconds_left % 60);
+
+                    var countdownMin = document.getElementById('countdownMin');
+                    var countdownSec = document.getElementById('countdownSec');
+
+                    // format countdown string + set tag value
+                    countdownMin.innerHTML = minutes;
+                    countdownSec.innerHTML = seconds;
+                    //$scope.countdownMin = minutes;
+                    //$scope.countdownSec = seconds;
+
+                    if (minutes === 0 && seconds === 0) {
+                        clearInterval(startCountdown);
+                    }
+                }, 1000); //closes setInterval
+
+            } //closes var startCountdown
+
+            var stopTimer = function(){
+                clearInterval(startCountdown);
+            };
+            $scope.startTimer = function(){
+                if(numberLoops ===0) {
+                //if(numberLoops <= maxLoops) {
+                    numberLoops++;
+                    numberRound = 1;
+                    startCountdown();
+                } //closes if statement
+                else {
+             //stop the interval after it runs the max # of loops
+                    stopTimer();
+                }
+            }; // closes $scope.startTimer
+            $scope.pauseTimer = stopTimer();
+            $scope.goThroughNames = function(){
+
+                if (numberLoops % totalPicks === 0){
+                    numberRound ++;
+                    $scope.numberRound = numberRound;
+                }
+                var totalRounds = $scope.totalRounds;
+
+                //set interval for iterating through team names and highlighting each one
                 setInterval(function () {
                     nameArray = $scope.nameArray;
-                    numberLoop += 1;
-                    var highlightedList = [];
-
+                    var wentAlready = [];
+                    $scope.numberRound = numberRound;
                     //PUSH ONE ITEM OF NAMEARRAY whose indexnumber matches numberLoop INTO THE highlightedList array;
                     angular.forEach(nameArray, function(item, index) {
-                       // if (index === (numberLoop - 1)){
-//alert(index +  " " + item.name);
-                        alert(item.name);
-                            highlightedList.push(item.name);
+                       if (index === (numberRound - 1)){
+                            alert(item.name + " #Round" + numberRound +" total Rounds: " + totalRounds);
+                           //$scope.activeTeam = item.name;
+                           var activeTeam = document.getElementsByClassName('activeTeam');
+                           activeTeam.innerText = item.name;
+                           wentAlready.push(item.name);
+                           $scope.wentAlready =wentAlready;
                             //find any existing highlight class and remove
-                          //  $('.highlight').removeClass('highlight');
+                            //$('.highlight').removeClass('highlight');
                             //find this name and add ".highlight"
-                           // $('ol#namelist li#' + item.name).addClass('highlight');
+                            $('li#' + item.name).addClass('highlight');
                        // }//FIND id and hten child
                         //$('#namelist').children('.onename-section')
-                     //   } //closes IF statement
+                        } //closes IF statement
                     });
 
                     //add CSS class="active" around each item of array, starting from index 0
                   //  $scope.highlightedList = highlightedList;
                 }, userTimeIntervalMS);
-               // setInterval();
-            }
-
-         $scope.changeTimeInterval = function(){
-             userTimeIntervalMS = $scope.userTimeInterval * 1000;
-         }
-
-        })
-
-  //DONT USE THIS ONE
-/*
-        .controller("timerCtrl", function($scope) {
-            //------------my code
-            //user submits time interval they want in minutes and seconds
-            //var userTimeInterval = $scope.userTimeInterval;  //object with min and sec property
-            var userMin = parseInt(userTimeInterval.min);
-            var userSec = parseInt(userTimeInterval.sec);
-            var userTimeIntervalMS = ((userMin * 60) + userSec) * 1000; //must set ng-model and change to milliseconds
-           /!* setInterval(function () {
-
-                // set the date you are counting down to
-                var timeNow = new Date().getTime();
-                //!***!!!!GET DATE NOW()
-
-
-                var targetTime = timeNow + userTimeIntervalMS;
-
-                var secondsDifference = (targetTime - timeNow) / 1000;  //divide by 1000 because the difference is in milliseconds and we want seconds
-
-                var minutesLeft = parseInt((secondsDifference / 60), 10);
-                var secondsLeft = parseInt((secondsDifference % 60), 10);  //get remainder of seconds that don't evenly fit into minutes or 69 sec
-
-                //use these variables to display on client side
-                $scope.countdownMin = minutesLeft;
-                $scope.countdownSec = secondsLeft;
-
-            }, userTimeIntervalMS);*!/
-        })
-*/
-
-        .controller("timertestCtrl", function($scope){
-            var userTimeIntervalMS;
-            $scope.submit= function(){
-               var userTimeInterval = $scope.userTimeInterval2; //object with min and sec property
-                var userMin = parseInt($scope.userTimeInterval2.min);
-                var userSec = parseInt($scope.userTimeInterval2.sec);
-                userTimeIntervalMS = ((userMin * 60) + userSec) * 1000; //must set ng-model and change to milliseconds
             };
 
-// set the date you are counting down to
-            var target_date = new Date("").getTime();
-            var target_time = target_date + userTimeIntervalMS;
-            alert(target_time);
-// variables for time units
-            var days, hours, minutes, seconds;
-
-// get tag element
-            var countdown = document.getElementById("countdown");
-
-// update the tag with id "countdown" every 1 second
-            setInterval(function () {
-
-                // find the amount of "seconds" between now and target
-                var current_date = new Date().getTime();
-                var seconds_left = (target_date - current_date) / 1000;
-
-                // do some time calculations
-                days = parseInt(seconds_left / 86400);
-                seconds_left = seconds_left % 86400;
-
-                hours = parseInt(seconds_left / 3600);
-                seconds_left = seconds_left % 3600;
-
-                minutes = parseInt(seconds_left / 60);
-                seconds = parseInt(seconds_left % 60);
-
-                // format countdown string + set tag value
-                countdownDays.innerHTML = days;
-                countdownHr.innerHTML = hours;
-                countdownMin.innerHTML = minutes;
-                countdownSec.innerHTML = seconds;
-
-            }, 1000);
-
-        })
-        .controller("ToDoController", function($scope){
-            $scope.hello="helloTodo";
-            $scope.todos = [
-                //official json specification is double-quotes
-                {"title": "Pet a puppy", "completed": false},
-                {"title": "Eat an apple", "completed": false},
-                {"title": "Fly a kite", "completed": false},
-                {"title": "Drink coffee", "completed": false},
-                {"title": "Go to the gym", "completed": false}
-            ];
-
-            $scope.clearFinished = function() {
-                //"Filter" deletes an array and creates a new array. Put array name in beginning ($scope.todos). True adds to the array and False deletes from array
-                $scope.todos = $scope.todos.filter(function (item) {
-                    return !item.completed;
-                });
-            };
-
-            $scope.delete = function(item){
-                $scope.todos.splice($scope.todos.indexOf(item),1);
-
-            };
-
-            $scope.add = function(){
-                $scope.todos.push({title: $scope.newTodo, completed: false});
-                $scope.newTodo = "";
-            };
-
-
-        })
+        }) //ends controller
 
         .filter('reverse', function() {
             return function(items) {
