@@ -44,7 +44,7 @@
             $scope.numberRound = 0;
             $scope.numberPick = 0;
 // SET TIMER
-            var userTimeIntervalMS, userMin, userSec, totalPicks, totalRounds;
+            var userTimeIntervalMS, userMin, userSec, totalPicks, totalRounds, maxLoops;
             $scope.setTime= function(){
                 var userTimeInterval = $scope.userTimeInterval; //object with min and sec property
                 userMin = parseInt($scope.userTimeInterval.min);
@@ -54,14 +54,15 @@
                 $scope.userTimeIntervalMS = userTimeIntervalMS;
                 $scope.userMin = userMin;
                 $scope.userSec = userSec;
-
+                totalRounds = $scope.totalRounds;
+                totalPicks = $scope.totalPicks;
+                maxLoops = totalPicks * totalRounds;
             };
             var numberRound = $scope.numberRound;
             var numberPick = $scope.numberPick;
-            var totalRounds = $scope.totalRounds;
-            var totalPicks = $scope.totalPicks;
+
             var numberLoops = 0;
-            var maxLoops = totalPicks * totalRounds;
+
 
             //refresh timer
             var startCountdown = function () {
@@ -109,10 +110,13 @@
                 clearInterval(startCountdown);
             };
             $scope.startTimer = function(){
-                if(numberLoops ===0) {
-                //if(numberLoops <= maxLoops) {
-                    numberLoops++;
+                if (numberLoops ===0){  //if its the very first loop
                     numberRound = 1;
+                }
+                //if(numberLoops ===0) {
+                if(numberLoops <= maxLoops) {
+                    numberLoops++;
+                    alert("numberLoops: " + numberLoops + " maxLoops: " + maxLoops);
                     startCountdown();
                 } //closes if statement
                 else {
