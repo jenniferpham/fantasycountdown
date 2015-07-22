@@ -87,8 +87,10 @@
                     hours = parseInt(seconds_left / 3600);
                     seconds_left = seconds_left % 3600;
 
-                    minutes = parseInt(seconds_left / 60);
-                    seconds = parseInt(seconds_left % 60);
+                    minutes = parseInt(seconds_left / 60) | 0;
+                    seconds = parseInt(seconds_left % 60) | 0;
+
+                    seconds = seconds < 10 ? "0" + seconds : seconds;
 
                     var countdownMin = document.getElementById('countdownMin');
                     var countdownSec = document.getElementById('countdownSec');
@@ -99,32 +101,31 @@
                     //$scope.countdownMin = minutes;
                     //$scope.countdownSec = seconds;
 
-                    if (minutes === 0 && seconds === 0) {
-                        clearInterval(startCountdown);
-                    }
+
                 }, 1000); //closes setInterval
 
-            } //closes var startCountdown
+            }; //closes var startCountdown
 
             var stopTimer = function(){
                 clearInterval(startCountdown);
             };
             $scope.startTimer = function(){
-                if (numberLoops ===0){  //if its the very first loop
-                    numberRound = 1;
+
+                for (var i = 0; i < maxLoops; i++) {
+                    if (numberLoops <= maxLoops) {
+                        numberLoops++;
+                        alert("numberLoops: " + numberLoops + " maxLoops: " + maxLoops);
+                        startCountdown();
+                    } //closes if statement
+                    else {
+                        //stop the interval after it runs the max # of loops
+                        stopTimer();
+                    }
                 }
-                //if(numberLoops ===0) {
-                if(numberLoops <= maxLoops) {
-                    numberLoops++;
-                    alert("numberLoops: " + numberLoops + " maxLoops: " + maxLoops);
-                    startCountdown();
-                } //closes if statement
-                else {
-             //stop the interval after it runs the max # of loops
-                    stopTimer();
-                }
+
             }; // closes $scope.startTimer
-            $scope.pauseTimer = stopTimer();
+
+            $scope.pauseTimer = clearInterval(startCountdown);
             $scope.goThroughNames = function(){
 
                 if (numberLoops % totalPicks === 0){
@@ -141,16 +142,17 @@
                     //PUSH ONE ITEM OF NAMEARRAY whose indexnumber matches numberLoop INTO THE highlightedList array;
                     angular.forEach(nameArray, function(item, index) {
                        if (index === (numberRound - 1)){
-                            alert(item.name + " #Round" + numberRound +" total Rounds: " + totalRounds);
+                            //alert(item.name + " #Round" + numberRound +" total Rounds: " + totalRounds);
                            //$scope.activeTeam = item.name;
-                           var activeTeam = document.getElementsByClassName('activeTeam');
+                           var activeTeam = document.getElementById('activeTeam');
                            activeTeam.innerText = item.name;
-                           wentAlready.push(item.name);
-                           $scope.wentAlready =wentAlready;
+                           //wentAlready.push(item.name);
+                           //$scope.wentAlready =wentAlready;
                             //find any existing highlight class and remove
                             //$('.highlight').removeClass('highlight');
                             //find this name and add ".highlight"
-                            $('li#' + item.name).addClass('highlight');
+                            $('li#' + item.name).style.color = "red";
+                                //.addClass('highlight');
                        // }//FIND id and hten child
                         //$('#namelist').children('.onename-section')
                         } //closes IF statement
