@@ -12,7 +12,6 @@
 
             $scope.delete = function(item){
                 $scope.nameArray.splice($scope.nameArray.indexOf(item),1);
-
             };
 
             $scope.addName = function(){
