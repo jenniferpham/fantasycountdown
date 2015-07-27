@@ -143,7 +143,7 @@
                        if (index === (numberRound - 1)){
                             //alert(item.name + " #Round" + numberRound +" total Rounds: " + totalRounds);
                            //$scope.activeTeam = item.name;
-                           var activeTeam = document.getElementById('activeTeam');
+                           var activeTeam = document.querySelector('#activeTeam');
                            activeTeam.innerText = item.name;
                            //wentAlready.push(item.name);
                            //$scope.wentAlready =wentAlready;
